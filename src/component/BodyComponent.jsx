@@ -1,11 +1,11 @@
 import { UploadOutlined } from '@ant-design/icons';
-import { Button, message, Upload } from 'antd';
+import { Button, message, Upload, Input } from 'antd';
 import React, { useState } from "react";
 
 const BodyComponent = () => {
   const [dataInput, setDataInput] = useState([]);
   const [dataOutput, setDataOutput] = useState([]);
-
+  const [fileName, setFileName] = useState("default")
   const propsIn = {
     name: 'file',
     action: '//jsonplaceholder.typicode.com/posts/',
@@ -68,16 +68,14 @@ const BodyComponent = () => {
     },
   };
   const handleGen = () => {
-    console.log(dataInput);
-    console.log(dataOutput.join("\n"));
-    download("text.html", dataOutput.join("\n"));
+    download(dataOutput.join("\n"));
   }
-  const download = (filename, text) => {
+  const download = (text) => {
     var blob = new Blob([text], { type: "text/plain" });
     var url = window.URL.createObjectURL(blob);
     var a = document.createElement("a");
     a.href = url;
-    a.download = filename;
+    a.download = fileName + ".html";
     a.click();
   }
   return (
@@ -93,6 +91,10 @@ const BodyComponent = () => {
         <Upload {...propsOut}>
           <Button icon={<UploadOutlined />}>Click to Upload</Button>
         </Upload>
+      </div>
+      <div>
+        <h1>File name</h1>
+        <Input placeholder="Basic usage" onChange={(e) => {setFileName(e.target.value)}}/>;
       </div>
       <Button type="primary" onClick={handleGen}>Primary Button</Button>
     </div>
